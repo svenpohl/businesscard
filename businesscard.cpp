@@ -190,10 +190,12 @@ CONTRACT businesscard : public eosio::contract {
                            &p_hour, &p_minute, &p_second);
  
       // Create date-string         
-      std::string str_year   =  std::to_string(  p_year  );  
-      std::string str_month  =  std::to_string(  p_month  );  
-      std::string str_day    =  std::to_string(  p_day  );                            
-      std::string memo_date =  str_month + "/" + str_day + "/" + str_year;
+      std::string str_year    =  std::to_string(  p_year  );  
+      std::string str_month   =  std::to_string(  p_month  );  
+      std::string str_day     =  std::to_string(  p_day  );                            
+      std::string str_hour    =  std::to_string(  p_hour  );                            
+      std::string str_minute  =  std::to_string(  p_minute  );                            
+      std::string memo_date   =  str_month + "/" + str_day + "/" + str_year + " " + str_hour + ":" + str_minute;
             
  
       // Create initial immutable and mutable data
@@ -298,6 +300,32 @@ CONTRACT businesscard : public eosio::contract {
         schema_itr->format
         );
       
+      
+      
+     
+      // get current timestamp  
+      auto thetime = now();
+               
+      int p_year;
+      int p_month;
+      int p_day;
+      int p_hour;
+      int p_minute; 
+      int p_second;     
+      
+      convert_ts(  (unsigned long int) thetime,
+                           &p_year, &p_month, &p_day,
+                           &p_hour, &p_minute, &p_second);
+ 
+      // Create date-string         
+      std::string str_year    =  std::to_string(  p_year  );  
+      std::string str_month   =  std::to_string(  p_month  );  
+      std::string str_day     =  std::to_string(  p_day  );                            
+      std::string str_hour    =  std::to_string(  p_hour  );                            
+      std::string str_minute  =  std::to_string(  p_minute  );                            
+      std::string memo_date   =  str_month + "/" + str_day + "/" + str_year + " " + str_hour + ":" + str_minute;
+       
+      
     
      // Get the number of past updates for increment
      uint64_t updatecnt =    std::get< uint64_t > (deserialized_old_data["updatecnt"]);  
@@ -311,6 +339,7 @@ CONTRACT businesscard : public eosio::contract {
 
      // Set updated counter and new info (e-mail, contract information, website...)
      deserialized_old_data["updatecnt"] = updatecnt;
+     deserialized_old_data["updated"]   = memo_date;     
      deserialized_old_data["info"]      = info;
      
             
